@@ -77,14 +77,14 @@ Handlebars.registerHelper('json', function(context) {
 Hooks.on('createItem', (sheet, aux, itemId) => {
     //console.log(actor);
     //console.log(item);
-    let profesions = sheet.actor.items.filter(i => i.type == "profesion");
-    let reputations = sheet.actor.items.filter(i => i.type == "reputation");
+    let profesions = sheet.actor.items.filter(i => i.data.type == "profesion");
+    let reputations = sheet.actor.items.filter(i => i.data.type == "reputation");
     console.log(profesions);
     if(sheet.data.type == "profesion" && profesions.length>1){
-        sheet.actor.deleteOwnedItem(profesions[0].id);
+        sheet.actor.deleteEmbeddedDocuments("Item",[profesions[0].id]);
     }
     if(sheet.data.type == "reputation" && reputations.length>1){
-        sheet.actor.deleteOwnedItem(reputations[0].id);
+        sheet.actor.deleteEmbeddedDocuments("Item",[reputations[0].id]);
     }
 });
 
@@ -235,7 +235,7 @@ Hooks.on("createChatMessage", async (chatMSG, flags, userId) => {
     
     let messageId = chatMSG.data._id;
     let msg = game.messages.get(messageId);
-    let msgIndex = game.messages.entities.indexOf(msg);
+    let msgIndex = game.messages.documentName.indexOf(msg);
     
     if (chatMSG.isRoll && chatMSG.isContentVisible) {
       let rollData = {
