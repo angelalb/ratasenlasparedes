@@ -7,6 +7,14 @@
   "compatibleCoreVersion": "0.8.5",
   "templateVersion": 2,
   "author": "jvir",
+    "authors": [
+    {
+      "name": "jvir"
+    },
+	{
+      "name": "NeV3rKilL"
+    }
+  ],
   "esmodules": ["module/ratasenlasparedes.js"],
   "styles": ["css/ratasenlasparedes.css"],
   "scripts": [],
