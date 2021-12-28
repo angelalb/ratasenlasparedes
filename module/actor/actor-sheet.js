@@ -61,14 +61,14 @@ export class ratasenlasparedesActorSheet extends ActorSheet {
     // Update Inventory Item
     html.find('.item-edit').click(ev => {
       const li = $(ev.currentTarget).parents(".item");
-      const item = this.actor.getOwnedItem(li.data("itemId"));
+      const item = this.actor.getEmbeddedDocument("Item",li.data("itemId"));
       item.sheet.render(true);
     });
 
     // Delete Inventory Item
     html.find('.item-delete').click(ev => {
       const li = $(ev.currentTarget).parents(".item");
-      this.actor.deleteOwnedItem(li.data("itemId"));
+      this.actor.deleteEmbeddedDocuments("Item",[li.data("itemId")]);
       li.slideUp(200, () => this.render(false));
     });
 
@@ -79,7 +79,7 @@ export class ratasenlasparedesActorSheet extends ActorSheet {
     html.find('.profesion').click( ev => {
      const profesion = this.actor.data.items.find(i => i.type == "profesion");
      if(profesion){
-         const item = this.actor.getOwnedItem(profesion._id);
+         const item = this.actor.getEmbeddedDocument("Item",[profesion._id]);
          item.sheet.render(true);
      }
     });
@@ -87,7 +87,7 @@ export class ratasenlasparedesActorSheet extends ActorSheet {
     html.find('.reputation').click( ev => {
      const reputation = this.actor.data.items.find(i => i.type == "reputation");
      if(reputation){
-         const item = this.actor.getOwnedItem(reputation._id);
+         const item = this.actor.getEmbeddedDocument("Item",[reputation._id]);
          item.sheet.render(true);
      }
     });
@@ -120,7 +120,7 @@ export class ratasenlasparedesActorSheet extends ActorSheet {
     delete itemData.data["type"];
 
     // Finally, create the item!
-    return this.actor.createOwnedItem(itemData);
+    return this.actor.createEmbeddedDocuments("Item",[itemData]);
   }
 
   /**
@@ -165,7 +165,7 @@ export class ratasenlasparedesActorSheet extends ActorSheet {
                 };
             
             
-                rollResult.toMessage(messageData);
+                rollResult.then(e=>{e.toMessage(messageData)});
  
         }
     }
@@ -206,7 +206,7 @@ export class ratasenlasparedesActorSheet extends ActorSheet {
                 flavor: label,
             };
             
-            attackResult.toMessage(attackData);
+            attackResult.then(e=>{e.toMessage(attackData)});
 
         }
     }
@@ -229,16 +229,16 @@ export class ratasenlasparedesActorSheet extends ActorSheet {
             //let damageResult = damageRoll.roll();
 //             let showDamage = false;
             let goal;
-            let rolls = attackResult.terms[0].results.reduce((a, b) => a + ' + ' + b); console.log(rolls);
-                // console.log(attackResult);
-                console.log(attackResult.terms);
-                let attackData = {
-                    speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-                    flags: {'ratasenlasparedes':{'text':label, 'goal':goal}},
-                    flavor: label,
-                };
+            //let rolls = attackResult.terms[0].results.reduce((a, b) => a + ' + ' + b); console.log(rolls);
+            // console.log(attackResult);
+            console.log(attackResult.terms);
+            let attackData = {
+                speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+                flags: {'ratasenlasparedes':{'text':label, 'goal':goal}},
+                flavor: label,
+            };
                 
-            attackResult.toMessage(attackData);
+            attackResult.then(e=>{e.toMessage(attackData)});
             
         }
     }
