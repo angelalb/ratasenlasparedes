@@ -128,7 +128,7 @@ export class ratasenlasparedesActorSheet extends ActorSheet {
    * @param {Event} event   The originating click event
    * @private
    */
-  _onRoll(event) {
+  async _onRoll(event) {
     event.preventDefault();
 //     console.log(event.currentTarget);
     const element = event.currentTarget;
@@ -182,7 +182,7 @@ export class ratasenlasparedesActorSheet extends ActorSheet {
             let roll = new Roll(rollString, this.actor.data.data);
             let damageRoll = new Roll(dataset.damage, this.actor.data.data);
             let label = dataset.label ? `Usa su <strong>${dataset.label}</strong> ${difficultyString}.` : '';
-            let attackResult = roll.roll();
+            let attackResult = await roll.roll();
             let goal;
 
             
@@ -206,7 +206,7 @@ export class ratasenlasparedesActorSheet extends ActorSheet {
                 flavor: label,
             };
             
-            attackResult.then(e=>{e.toMessage(attackData)});
+            attackResult.toMessage(attackData);
 
         }
     }
