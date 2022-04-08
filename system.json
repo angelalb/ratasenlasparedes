@@ -2,8 +2,8 @@
   "name": "ratasenlasparedes",
   "title": "Ratas en las paredes",
   "description": "Ratas en las paredes para FoundryVTT!",
-  "version": "1.1.0",
-  "minimumCoreVersion": "0.8.4",
+  "version": "1.1.1",
+  "minimumCoreVersion": "9",
   "compatibleCoreVersion": "9",
   "templateVersion": 2,
   "author": "jvir",
@@ -13,6 +13,9 @@
     },
 	{
       "name": "NeV3rKilL"
+    },
+	{
+      "name": "ParvusDomus"
     }
   ],
   "esmodules": ["module/ratasenlasparedes.js"],
