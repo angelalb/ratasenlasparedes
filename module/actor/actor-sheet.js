@@ -155,7 +155,7 @@ export class ratasenlasparedesActorSheet extends ActorSheet {
             }
             let roll = new Roll(rollString, this.actor.data.data);
             let label = dataset.label ? `Realiza una tirada <strong>${difficulty[1]}</strong> de <strong>${dataset.label}</strong>` : '';
-            let rollResult = roll.roll();
+            let rollResult = await roll.roll();
             let goal; //TODO: Implementar goal
             
             let messageData = {
@@ -225,7 +225,7 @@ export class ratasenlasparedesActorSheet extends ActorSheet {
             
             let roll = new Roll(rollString);
             let label = dataset.label ? `Causa daño con su <strong>${dataset.label}</strong>.` : '';
-            let attackResult = roll.roll();
+            let attackResult = await roll.roll();
             //let damageResult = damageRoll.roll();
 //             let showDamage = false;
             let goal;
