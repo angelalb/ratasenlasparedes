@@ -165,7 +165,7 @@ export class ratasenlasparedesActorSheet extends ActorSheet {
                 };
             
             
-                rollResult.then(e=>{e.toMessage(messageData)});
+               rollResult.toMessage(messageData); 
  
         }
     }
