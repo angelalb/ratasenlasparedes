@@ -21,7 +21,7 @@ export class ratasenlasparedesActorSheet extends ActorSheet {
   getData() {
     const data = foundry.utils.deepClone(super.getData().data);
     data.dtypes = ["String", "Number", "Boolean"];
-    for (let attr of Object.values(data.data.attributes)) {
+    for (let attr of Object.values(data.system.attributes)) {
       attr.isCheckbox = attr.dtype === "Boolean";
     }
 
