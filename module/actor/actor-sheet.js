@@ -180,7 +180,7 @@ export class ratasenlasparedesActorSheet extends ActorSheet {
                 rollString = dataset.roll;
             }
             let roll = new Roll(rollString, this.actor.data.data);
-            let damageRoll = new Roll(dataset.damage, this.actor.data.data);
+            let damageRoll = new Roll(dataset.damage, this.actor.system);
             let label = dataset.label ? `Usa su <strong>${dataset.label}</strong> ${difficultyString}.` : '';
             let attackResult = await roll.roll();
             let goal;
@@ -237,7 +237,7 @@ export class ratasenlasparedesActorSheet extends ActorSheet {
                 flavor: label,
             };
                 
-            attackResult.then(e=>{e.toMessage(attackData)});
+            attackResult.toMessage(attackData);
             
         }
     }

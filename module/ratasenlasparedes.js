@@ -155,7 +155,7 @@ Hooks.on('ready', () => {
         };
 
         roll.toMessage(sanityData);
-
+        if (roll.total < 0) return;
         let pcMinus = game.actors.get(actorId).system.pc.value - roll.total;
         (pcMinus < 0) ? pcMinus = 0 : pcMinus = pcMinus;
         game.actors.get(actorId).update({ _id: actorId, 'system.pc.value': pcMinus });
