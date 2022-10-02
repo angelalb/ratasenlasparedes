@@ -17,7 +17,7 @@ export class ratasenlasparedesItemSheet extends ItemSheet {
   /** @override */
   get template() {
     const path = "systems/ratasenlasparedes/templates/item";
-    return `${path}/${this.item.data.type}-sheet.html`;
+    return `${path}/${this.item.type}-sheet.html`;
   }
 
   /* -------------------------------------------- */

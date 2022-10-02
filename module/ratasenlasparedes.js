@@ -6,85 +6,82 @@ import { ratasenlasparedesItem } from "./item/item.js";
 import { ratasenlasparedesItemSheet } from "./item/item-sheet.js";
 
 
-Hooks.once('init', async function() {
-  CONFIG.ChatMessage.template = "systems/ratasenlasparedes/templates/chat/chat-message.html";
-  CONFIG.Dice.template = "systems/ratasenlasparedes/templates/dice/roll.html";
-  CONFIG.Dice.tooltip = "systems/ratasenlasparedes/templates/dice/tooltip.html";
-  Roll.CHAT_TEMPLATE = "systems/ratasenlasparedes/templates/dice/roll.html"
-  Roll.TOOLTIP_TEMPLATE = "systems/ratasenlasparedes/templates/dice/tooltip.html"
+Hooks.once('init', async function () {
+    CONFIG.ChatMessage.template = "systems/ratasenlasparedes/templates/chat/chat-message.html";
+    CONFIG.Dice.template = "systems/ratasenlasparedes/templates/dice/roll.html";
+    CONFIG.Dice.tooltip = "systems/ratasenlasparedes/templates/dice/tooltip.html";
+    Roll.CHAT_TEMPLATE = "systems/ratasenlasparedes/templates/dice/roll.html"
+    Roll.TOOLTIP_TEMPLATE = "systems/ratasenlasparedes/templates/dice/tooltip.html"
 });
 
-Hooks.once('init', async function() {
+Hooks.once('init', async function () {
 
-  game.ratasenlasparedes = {
-    ratasenlasparedesActor,
-    ratasenlasparedesItem
-  };
+    game.ratasenlasparedes = {
+        ratasenlasparedesActor,
+        ratasenlasparedesItem
+    };
 
-  /**
-   * Set an initiative formula for the system
-   * @type {String}
-   */
-  CONFIG.Combat.initiative = {
-    formula: "1d6",
-    decimals: 2
-  };
-  
-  // Define chat templateData
-  CONFIG.ChatMessage.template = "systems/ratasenlasparedes/templates/chat/chat-message.html";
-  CONFIG.Dice.template = "systems/ratasenlasparedes/templates/dice/roll.html";
-  CONFIG.Dice.tooltip = "systems/ratasenlasparedes/templates/dice/tooltip.html";
-  // Define custom Entity classes
-  CONFIG.Actor.entityClass = ratasenlasparedesActor;
-  CONFIG.Item.entityClass = ratasenlasparedesItem;
+    /**
+     * Set an initiative formula for the system
+     * @type {String}
+     */
+    CONFIG.Combat.initiative = {
+        formula: "1d6",
+        decimals: 2
+    };
 
-  // Register sheet application classes
-  Actors.registerSheet("ratasenlasparedes", ratasenlasparedesActorSheet, { 
-      types: ['character'], 
-      makeDefault: true 
+    // Define chat templateData
+    CONFIG.ChatMessage.template = "systems/ratasenlasparedes/templates/chat/chat-message.html";
+    CONFIG.Dice.template = "systems/ratasenlasparedes/templates/dice/roll.html";
+    CONFIG.Dice.tooltip = "systems/ratasenlasparedes/templates/dice/tooltip.html";
+    // Define custom Entity classes
+    CONFIG.Actor.entityClass = ratasenlasparedesActor;
+    CONFIG.Item.entityClass = ratasenlasparedesItem;
+
+    // Register sheet application classes
+    Actors.registerSheet("ratasenlasparedes", ratasenlasparedesActorSheet, {
+        types: ['character'],
+        makeDefault: true
     });
-  Actors.registerSheet("ratasenlasparedes", ratasenlasparedesNpcSheet, { 
-      types: ['npc'], 
-      makeDefault: true
-    });  
-  Actors.unregisterSheet("core", ActorSheet);
-  
-  Items.unregisterSheet("core", ItemSheet);
-  Items.registerSheet("ratasenlasparedes", ratasenlasparedesItemSheet, { makeDefault: true });
-  
-  document.getElementById("logo").src="/systems/ratasenlasparedes/img/thp.png";
-    
-  // If you need to add Handlebars helpers, here are a few useful examples:
-  Handlebars.registerHelper('concat', function() {
-    var outStr = '';
-    for (var arg in arguments) {
-      if (typeof arguments[arg] != 'object') {
-        outStr += arguments[arg];
-      }
-    }
-    return outStr;
-  });
+    Actors.registerSheet("ratasenlasparedes", ratasenlasparedesNpcSheet, {
+        types: ['npc'],
+        makeDefault: true
+    });
+    Actors.unregisterSheet("core", ActorSheet);
 
-  Handlebars.registerHelper('toLowerCase', function(str) {
-    return str.toLowerCase();
-  });
+    Items.unregisterSheet("core", ItemSheet);
+    Items.registerSheet("ratasenlasparedes", ratasenlasparedesItemSheet, { makeDefault: true });
+
+    document.getElementById("logo").src = "/systems/ratasenlasparedes/img/thp.png";
+
+    // If you need to add Handlebars helpers, here are a few useful examples:
+    Handlebars.registerHelper('concat', function () {
+        var outStr = '';
+        for (var arg in arguments) {
+            if (typeof arguments[arg] != 'object') {
+                outStr += arguments[arg];
+            }
+        }
+        return outStr;
+    });
+
+    Handlebars.registerHelper('toLowerCase', function (str) {
+        return str.toLowerCase();
+    });
 });
 
-Handlebars.registerHelper('json', function(context) {
+Handlebars.registerHelper('json', function (context) {
     return JSON.stringify(context);
 });
 
 Hooks.on('createItem', (sheet, aux, itemId) => {
-    //console.log(actor);
-    //console.log(item);
-    let profesions = sheet.actor.items.filter(i => i.data.type == "profesion");
-    let reputations = sheet.actor.items.filter(i => i.data.type == "reputation");
-    console.log(profesions);
-    if(sheet.data.type == "profesion" && profesions.length>1){
-        sheet.actor.deleteEmbeddedDocuments("Item",[profesions[0].id]);
+    let profesions = sheet.actor.items.filter(i => i.type == "profesion");
+    let reputations = sheet.actor.items.filter(i => i.type == "reputation");
+    if (sheet.type == "profesion" && profesions.length > 1) {
+        sheet.actor.deleteEmbeddedDocuments("Item", [profesions[0].id]);
     }
-    if(sheet.data.type == "reputation" && reputations.length>1){
-        sheet.actor.deleteEmbeddedDocuments("Item",[reputations[0].id]);
+    if (sheet.type == "reputation" && reputations.length > 1) {
+        sheet.actor.deleteEmbeddedDocuments("Item", [reputations[0].id]);
     }
 });
 
@@ -111,11 +108,11 @@ Hooks.on('ready', () => {
             $('#hotbar').show();
         }
     });
-    
+
     $('#chat-controls .fa-dice-d20').addClass("fa-dice-d6");
     $('#chat-controls .fa-dice-d20').removeClass("fa-dice-d20");
-    
-    
+
+
 
     $(document).on('click', '#chat-controls .fa-dice-d6', ev => {
         const dialogOptions = {
@@ -129,42 +126,43 @@ Hooks.on('ready', () => {
             rollClass: 'ratas-simple-roller-roll',
         };
         // Render the modal.
-      renderTemplate('systems/ratasenlasparedes/templates/roller.html', templateData).then(dlg => {
-        let dialogRoller = new Dialog({
-          title: 'Lanzador',
-          content: dlg,
-          buttons: {
-//             close: {
-//               label: 'd3-3',
-//               callback: () => console.log("Cerrado ratas-simple-dice-roller")
-//             }
-          }
-        }, dialogOptions);
-        console.log(dialogRoller);
-        dialogRoller.render(true);
-      });  
+        renderTemplate('systems/ratasenlasparedes/templates/roller.html', templateData).then(dlg => {
+            let dialogRoller = new Dialog({
+                title: 'Lanzador',
+                content: dlg,
+                buttons: {
+                }
+            }, dialogOptions);
+            dialogRoller.render(true);
+        });
     });
-    
+
     $(document).on('click', '.ratas-simple-roller-roll', ev => {
         let roll = new Roll(String($(ev.currentTarget).data('formula')));
         roll.roll();
         roll.toMessage();
     });
-    
+
     $(document).on('click', '.ratas-sanity-check', ev => {
         let roll = new Roll(String($(ev.currentTarget).data('formula')));
         let actorId = String($(ev.currentTarget).data('actor-id'));
-        roll.roll();
-        roll.toMessage();
-        console.log(game.actors.get(actorId).data.data.pc.value);
-        let pcMinus = game.actors.get(actorId).data.data.pc.value - roll._total;
+        roll.roll({async: false});
+        let label = "Perdida de cordura.";
+        let sanityData = {
+            speaker: ChatMessage.getSpeaker({ actor: actorId }),
+            flags: {'ratasenlasparedes':{'text':label, 'detail': roll.total}},
+            flavor: label
+        };
+
+        roll.toMessage(sanityData);
+        if (roll.total < 0) return;
+        let pcMinus = game.actors.get(actorId).system.pc.value - roll.total;
         (pcMinus < 0) ? pcMinus = 0 : pcMinus = pcMinus;
-        game.actors.get(actorId).update({_id: actorId, 'data.pc.value': pcMinus});
+        game.actors.get(actorId).update({ _id: actorId, 'system.pc.value': pcMinus });
     });
-    
 });
 
-Hooks.on('renderSceneNavigation', (app,html) => {
+Hooks.on('renderSceneNavigation', (app, html) => {
     if (window.hideUI) {
         html.hide();
     }
@@ -192,58 +190,31 @@ Hooks.on('renderCombatTracker', (app, html) => {
 //Chat Messages
 Hooks.on("createChatMessage", async (chatMSG, flags, userId) => {
 
-    
-    
-//         chatMSG.setFlag("ratasenlasparedes", "actorImg", "/manuel.jpg");
-     console.log(chatMSG);
-//     let linear = chatMSG._roll.parts.filter((part) => part.rolls !== undefined).map(part => part.rolls.reduce(function(a, rolls){a.push(rolls.roll); return a;}, []));
-     
-     let linearDices = [];
-     let linearMods = [];
-     
-     
-     let fvttVersion = game.data.version;
-     
+    console.log(chatMSG);
 
-    //FVTT 0.7.x
-    if (chatMSG._roll){
-    chatMSG._roll.terms.forEach(
-        function(term){
-            if (term.results !== undefined){
-                term.results.forEach(result => linearDices.push(result.result));
-            }else{
-                //linearMods.push(term);
-            }
-        }
-    );
-    }
-     
-
-     
+    let linearDices = [];
+    let linearMods = [];
 
     let linearRoll = linearDices.join(' + ') + ' ' + linearMods.join(' ');
-    
-    
 
-
-    if (game.user.isGM){
-        let actor = Array.from(game.actors).find(actor => actor._id == chatMSG.data.speaker.actor);
-        chatMSG.setFlag("ratasenlasparedes", "profileImg", actor ? actor.data.img : game.user.avatar);
+    if (game.user.isGM) {
+        let actor = Array.from(game.actors).find(actor => actor._id == chatMSG.speaker.actor);
+        chatMSG.setFlag("ratasenlasparedes", "profileImg", actor ? actor.img : game.user.avatar);
         chatMSG.setFlag("ratasenlasparedes", "detail", linearRoll);
     }
-//     console.log(actor);
-    
-    let messageId = chatMSG.data._id;
+    //     console.log(actor);
+
+    let messageId = chatMSG._id;
     let msg = game.messages.get(messageId);
     let msgIndex = game.messages.documentName.indexOf(msg);
-    
+
     if (chatMSG.isRoll && chatMSG.isContentVisible) {
-      let rollData = {
+        let rollData = {
             //flavor: ChatMSG.getFlag('ratasenlasparedes', 'text'),
-            formula: chatMSG._roll.formula,
+            formula: chatMSG.rolls.formula,
             username: game.user.name,
         };
-        console.log(rollData);
+        // console.log(rollData);
     }
 
 
