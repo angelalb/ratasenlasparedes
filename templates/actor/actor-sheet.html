@@ -2,16 +2,16 @@
     <div class="basic-data">
         <div class="basic-text-fields flexcol">
             <div class="flexrow">
-                <label class="resource-label">Nombre: </label>{{ log this }}
+                <label class="resource-label">Nombre: </label>
                 <input name="name" type="text" value="{{name}}" placeholder="{{localize 'RATASENLASPAREDES.Nombre'}}"/>
             </div>
             <div class="flexrow">
                 <label class="resource-label reputation">Reputación: </label>
-                <input name="data.reputation" type="text" value="{{data.reputation}}" placeholder="Reputación"/>
+                <input name="system.reputation" type="text" value="{{system.reputation}}" placeholder="Reputación"/>
             </div>
             <div class="flexrow">
                 <label class="resource-label profesion">Profesión: </label>
-                <input name="data.profesion" type="text" value="{{data.profesion}}" placeholder="Profesión"/>
+                <input name="system.profesion" type="text" value="{{system.profesion}}" placeholder="Profesión"/>
             </div>
         </div>
         <img class="logo-img" src="/systems/ratasenlasparedes/img/logo.png" title="Ratas en lass paredes" height="120"/>
@@ -21,24 +21,24 @@
     <div class="attribute-section flexrow">
         <div class="attributes">
             <div class="attribute flexrow">
-                <label for="data.abilities.des.value" class="resource-label ability-mod rollable" data-roll="2d6+@abilities.des.value" data-label="destreza" data-roll-type="ability">Destreza</label>
-                <input type="text" name="data.abilities.des.value" value="{{data.abilities.des.value}}" data-dtype="Number"/>
+                <label for="system.abilities.des.value" class="resource-label ability-mod rollable" data-roll="2d6+@abilities.des.value" data-label="destreza" data-roll-type="ability">Destreza</label>
+                <input type="text" name="system.abilities.des.value" value="{{system.abilities.des.value}}" data-dtype="Number"/>
             </div>
             <div class="attribute flexrow">
-                <label for="data.abilities.ing.value" class="resource-label ability-mod rollable" data-roll="2d6+@abilities.ing.value" data-label="ingenio" data-roll-type="ability">Ingenio</label>
-                <input type="text" name="data.abilities.ing.value" value="{{data.abilities.ing.value}}" data-dtype="Number"/>
+                <label for="system.abilities.ing.value" class="resource-label ability-mod rollable" data-roll="2d6+@abilities.ing.value" data-label="ingenio" data-roll-type="ability">Ingenio</label>
+                <input type="text" name="system.abilities.ing.value" value="{{system.abilities.ing.value}}" data-dtype="Number"/>
             </div>
             <div class="attribute flexrow">
-                <label for="data.abilities.mus.value" class="resource-label ability-mod rollable" data-roll="2d6+@abilities.mus.value" data-label="musculos" data-roll-type="ability">Músculo</label>
-                <input type="text" name="data.abilities.mus.value" value="{{data.abilities.mus.value}}" data-dtype="Number"/>
+                <label for="system.abilities.mus.value" class="resource-label ability-mod rollable" data-roll="2d6+@abilities.mus.value" data-label="musculos" data-roll-type="ability">Músculo</label>
+                <input type="text" name="system.abilities.mus.value" value="{{system.abilities.mus.value}}" data-dtype="Number"/>
             </div>
             <div class="attribute flexrow">
-                <label for="data.abilities.vio.value" class="resource-label ability-mod rollable" data-roll="2d6+@abilities.vio.value" data-label="violencia" data-roll-type="ability">Violencia</label>
-                <input type="text" name="data.abilities.vio.value" value="{{data.abilities.vio.value}}" data-dtype="Number"/>
+                <label for="system.abilities.vio.value" class="resource-label ability-mod rollable" data-roll="2d6+@abilities.vio.value" data-label="violencia" data-roll-type="ability">Violencia</label>
+                <input type="text" name="system.abilities.vio.value" value="{{system.abilities.vio.value}}" data-dtype="Number"/>
             </div>
             <div class="attribute flexrow">
-                <label for="data.abilities.vol.value" class="resource-label ability-mod rollable" data-roll="2d6+@abilities.vol.value" data-label="voluntad" data-roll-type="ability">Voluntad</label>
-                <input type="text" name="data.abilities.vol.value" value="{{data.abilities.vol.value}}" data-dtype="Number"/>
+                <label for="system.abilities.vol.value" class="resource-label ability-mod rollable" data-roll="2d6+@abilities.vol.value" data-label="voluntad" data-roll-type="ability">Voluntad</label>
+                <input type="text" name="system.abilities.vol.value" value="{{system.abilities.vol.value}}" data-dtype="Number"/>
             </div>
         </div>
 
@@ -46,25 +46,25 @@
 
         <div class="derivates">
             <div class="resource flex-group-center">
-                <label for="data.power.value" class="resource-label">PE</label>
+                <label for="system.power.value" class="resource-label">PE</label>
                 <div class="resource-content flexrow flex-center flex-between">
-                  <input type="text" name="data.pe.value" value="{{data.pe.value}}" data-dtype="Number"/>
+                  <input type="text" name="system.pe.value" value="{{system.pe.value}}" data-dtype="Number"/>
                 </div>
             </div>
             <div class="resource flex-group-center">
-                <label for="data.pv.value" class="resource-label">PV</label>
+                <label for="system.pv.value" class="resource-label">PV</label>
                 <div class="resource-content flexrow flex-center flex-between">
-                  <input type="text" name="data.pv.value" value="{{data.pv.value}}" data-dtype="Number"/>
+                  <input type="text" name="system.pv.value" value="{{system.pv.value}}" data-dtype="Number"/>
                   <span> / </span>
-                  <input type="text" name="data.pv.max" value="{{data.pv.max}}" data-dtype="Number"/>
+                  <input type="text" name="system.pv.max" value="{{system.pv.max}}" data-dtype="Number"/>
                 </div>
             </div>
             <div class="resource flex-group-center">
-                <label for="data.power.value" class="resource-label rollable" data-roll="custom" data-label="Cordura" data-roll-type="sanity">PC</label>
+                <label for="system.power.value" class="resource-label rollable" data-roll="custom" data-label="Cordura" data-roll-type="sanity">PC</label>
                 <div class="resource-content flexrow flex-center flex-between">
-                  <input type="text" name="data.pc.value" value="{{data.pc.value}}" data-dtype="Number"/>
+                  <input type="text" name="system.pc.value" value="{{system.pc.value}}" data-dtype="Number"/>
                   <span> / </span>
-                  <input type="text" name="data.pc.max" value="{{data.pc.max}}" data-dtype="Number"/>
+                  <input type="text" name="system.pc.max" value="{{system.pc.max}}" data-dtype="Number"/>
                 </div>
             </div>
         </div>
@@ -91,8 +91,8 @@
     <section class="sheet-body">
 
         {{!-- Biography Tab --}}
-        <div class="tab biography" data-group="primary" data-tab="description">{{log 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'}}{{log editable}}{{log owner}}{{log this}}{{log options}}
-            {{editor content=data.biography target="data.biography" button=true owner=owner editable=true}}
+        <div class="tab biography" data-group="primary" data-tab="description">
+            {{editor enrichedBio target="system.biography" button=true editable=true}}
         </div>
 
         {{!-- Owned Items Tab --}}
@@ -109,8 +109,8 @@
             {{#each gear as |item id|}}
                 <li class="item flexrow" data-item-id="{{item._id}}">
                     <div class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="24" height="24"/></div>
-                    {{#if item.data.damage}}
-                                        <h4 class="item-name rollable" data-roll="2d6+@abilities.vio.value" data-label="{{item.name}}" data-roll-type="weapon" data-damage="{{item.data.damage}}" >{{item.name}}</h4>
+                    {{#if item.system.damage}}
+                                        <h4 class="item-name rollable" data-roll="2d6+@abilities.vio.value" data-label="{{item.name}}" data-roll-type="weapon" data-damage="{{item.system.damage}}" >{{item.name}}</h4>
                     {{else}}
                                         <h4 class="item-name">{{item.name}}</h4>
                     {{/if}}
@@ -123,10 +123,10 @@
             {{#each weapon as |item id|}}
                 <li class="item flexrow" data-item-id="{{item._id}}">
                     <div class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="24" height="24"/></div>
-                    {{#if item.data.damage}}
+                    {{#if item.system.damage}}
                                         <h4 class="flexrow">
-                                            <div class="item-name rollable" data-roll="2d6+@abilities.vio.value" data-label="{{item.name}}" data-roll-type="weapon" data-damage="{{item.data.damage}}" >{{item.name}}</div>
-                                            <div class="item-damage rollable" data-roll="{{item.data.damage}}" data-label="{{item.name}}" data-roll-type="damage" style="justify-self:start">({{item.data.damage}})</div>
+                                            <div class="item-name rollable" data-roll="{{item.system.damage}}" data-label="{{item.name}}" data-roll-type="weapon" data-damage="{{item.damage}}" >{{item.name}}</div>
+                                            <div class="item-damage rollable" data-roll="{{item.system.damage}}" data-label="{{item.name}}" data-roll-type="weapon" style="justify-self:start">({{item.system.damage}})</div>
                                         </h4>
                                         
                     {{else}}

@@ -18,7 +18,7 @@ export class ratasenlasparedesActorSheet extends ActorSheet {
   /* -------------------------------------------- */
 
   /** @override */
-  getData() {
+  async getData() {
     const data = foundry.utils.deepClone(super.getData().data);
     data.dtypes = ["String", "Number", "Boolean"];
     for (let attr of Object.values(data.system.attributes)) {
@@ -26,19 +26,21 @@ export class ratasenlasparedesActorSheet extends ActorSheet {
     }
 
     // Prepare items.
-    if (this.actor.data.type == 'character') {
+    if (this.actor.type == 'character') {
       this._prepareCharacterItems(data);
     }
+
+    data.enrichedBio = await TextEditor.enrichHTML(this.object.system.biography, {async: true})
 
     return data;
   }
   
   activateEditor(name, options, initialContent) {//TODO: Custom editor
     // remove some controls to the editor as the space is lacking
-      console.log(name);
-      console.log(options);
-      console.log(initialContent);
-    if (name == "data.biography") {
+      // console.log(name);
+      // console.log(options);
+      // console.log(initialContent);
+    if (name == "system.biography") {
       /*options.toolbar = "styleselect bullist hr table removeFormat save";*/
     } 
     super.activateEditor(name, options, initialContent);
@@ -77,7 +79,7 @@ export class ratasenlasparedesActorSheet extends ActorSheet {
     
     // profesion show.
     html.find('.profesion').click( ev => {
-     const profesion = this.actor.data.items.find(i => i.type == "profesion");
+     const profesion = this.actor.items.find(i => i.type == "profesion");
      if(profesion){
          const item = this.actor.getEmbeddedDocument("Item",[profesion._id]);
          item.sheet.render(true);
@@ -85,7 +87,7 @@ export class ratasenlasparedesActorSheet extends ActorSheet {
     });
     // profesion show.
     html.find('.reputation').click( ev => {
-     const reputation = this.actor.data.items.find(i => i.type == "reputation");
+     const reputation = this.actor.items.find(i => i.type == "reputation");
      if(reputation){
          const item = this.actor.getEmbeddedDocument("Item",[reputation._id]);
          item.sheet.render(true);
@@ -130,7 +132,6 @@ export class ratasenlasparedesActorSheet extends ActorSheet {
    */
   async _onRoll(event) {
     event.preventDefault();
-//     console.log(event.currentTarget);
     const element = event.currentTarget;
     const dataset = element.dataset;
     const rollType = dataset.rollType;
@@ -153,17 +154,16 @@ export class ratasenlasparedesActorSheet extends ActorSheet {
             }else{
                 rollString = dataset.roll;
             }
-            let roll = new Roll(rollString, this.actor.data.data);
+            let roll = new Roll(rollString, this.actor.system);
             let label = dataset.label ? `Realiza una tirada <strong>${difficulty[1]}</strong> de <strong>${dataset.label}</strong>` : '';
-            let rollResult = await roll.roll();
-            let goal; //TODO: Implementar goal
+            roll.async = true;
+            let rollResult = await roll.roll({async: true});
             
             let messageData = {
                     speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-                    flags: {'ratasenlasparedes':{'text':label, 'goal':goal, 'detail': rollResult.result}},
+                    flags: {'ratasenlasparedes':{'text':label, 'detail': rollResult.result}},
                     flavor: label,
                 };
-            
             
                rollResult.toMessage(messageData); 
  
@@ -219,8 +219,8 @@ export class ratasenlasparedesActorSheet extends ActorSheet {
                                 }
                                 return acu;
                             }, 0);
-            console.log("Modificador al daño: " + damageMod);
-            console.log(dataset);
+//            console.log("Modificador al daño: " + damageMod);
+//            console.log(dataset);
             damageMod == 0 ? rollString = dataset.roll : rollString = dataset.roll + " + (" + damageMod + ")"; 
             
             let roll = new Roll(rollString);
@@ -231,7 +231,7 @@ export class ratasenlasparedesActorSheet extends ActorSheet {
             let goal;
             //let rolls = attackResult.terms[0].results.reduce((a, b) => a + ' + ' + b); console.log(rolls);
             // console.log(attackResult);
-            console.log(attackResult.terms);
+//            console.log(attackResult.terms);
             let attackData = {
                 speaker: ChatMessage.getSpeaker({ actor: this.actor }),
                 flags: {'ratasenlasparedes':{'text':label, 'goal':goal}},

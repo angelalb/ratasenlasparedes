@@ -2,9 +2,9 @@
   "name": "ratasenlasparedes",
   "title": "Ratas en las paredes",
   "description": "Ratas en las paredes para FoundryVTT!",
-  "version": "1.1.2",
-  "minimumCoreVersion": "9",
-  "compatibleCoreVersion": "9",
+  "version": "1.2.0",
+  "minimumCoreVersion": "10",
+  "compatibleCoreVersion": "10",
   "templateVersion": 2,
   "author": "jvir",
     "authors": [
