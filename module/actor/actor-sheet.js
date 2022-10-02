@@ -176,7 +176,7 @@ export class ratasenlasparedesActorSheet extends ActorSheet {
             if (difficulty[0] != "0") {
                 rollString = dataset.roll + ' ' + difficulty[0];
                 difficultyString = ` en una situación <strong>${difficulty[1]}</strong>`;
-            }else{
+            } else {
                 rollString = dataset.roll;
             }
             let roll = new Roll(rollString, this.actor.data.data);
@@ -185,7 +185,6 @@ export class ratasenlasparedesActorSheet extends ActorSheet {
             let attackResult = await roll.roll();
             let goal;
 
-            
             if (attackResult._total <= 7){ /*@Compendium[ratasenlasparedes.ayudas.8eZa50wvErHt4ONd]{Consecuencias}*/
                 label += ` <strong>Falla</strong> y sufre <a class="entity-link" data-pack="ratasenlasparedes.ayudas" data-lookup="Consecuencias" draggable="true"><i class="fas fa-book-open"></i> dos Consecuencias}</a>.`;
                 goal = "Fallo";
@@ -261,10 +260,10 @@ export class ratasenlasparedesActorSheet extends ActorSheet {
           title: 'Perdida de Cordura',
           content: dlg,
           buttons: {
-//             close: {
-//               label: 'd3-3',
-//               callback: () => console.log("Cerrado ratas-simple-dice-roller")
-//             }
+            close: {
+              label: 'Cerrar',
+              callback: () => console.log("Cerrado ratas-simple-dice-roller")
+            }
           }
         }, dialogOptions).render(true);
       });

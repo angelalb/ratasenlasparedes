@@ -75,11 +75,8 @@ Handlebars.registerHelper('json', function (context) {
 });
 
 Hooks.on('createItem', (sheet, aux, itemId) => {
-    //console.log(actor);
-    //console.log(item);
     let profesions = sheet.actor.items.filter(i => i.type == "profesion");
     let reputations = sheet.actor.items.filter(i => i.type == "reputation");
-    console.log(profesions);
     if (sheet.type == "profesion" && profesions.length > 1) {
         sheet.actor.deleteEmbeddedDocuments("Item", [profesions[0].id]);
     }
@@ -136,7 +133,6 @@ Hooks.on('ready', () => {
                 buttons: {
                 }
             }, dialogOptions);
-            console.log(dialogRoller);
             dialogRoller.render(true);
         });
     });
@@ -151,15 +147,19 @@ Hooks.on('ready', () => {
         let roll = new Roll(String($(ev.currentTarget).data('formula')));
         let actorId = String($(ev.currentTarget).data('actor-id'));
         roll.roll({async: false});
-        roll.flavor = "Tirada de sanidad.";
-        console.log(roll);
-        roll.toMessage();
-        console.log(game.actors.get(actorId).system.pc.value);
+        let label = "Perdida de cordura.";
+        let sanityData = {
+            speaker: ChatMessage.getSpeaker({ actor: actorId }),
+            flags: {'ratasenlasparedes':{'text':label, 'detail': roll.total}},
+            flavor: label
+        };
+
+        roll.toMessage(sanityData);
+
         let pcMinus = game.actors.get(actorId).system.pc.value - roll.total;
         (pcMinus < 0) ? pcMinus = 0 : pcMinus = pcMinus;
         game.actors.get(actorId).update({ _id: actorId, 'system.pc.value': pcMinus });
     });
-
 });
 
 Hooks.on('renderSceneNavigation', (app, html) => {
