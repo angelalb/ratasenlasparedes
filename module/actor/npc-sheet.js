@@ -32,7 +32,7 @@ export class ratasenlasparedesNpcSheet extends ActorSheet {
     data.dtypes = ["String", "Number", "Boolean"];
 
     // Prepare items.
-    if (this.actor.data.type == 'npc') {
+    if (this.actor.type == 'npc') {
       this._prepareCharacterItems(data);
     }
 
@@ -62,7 +62,7 @@ export class ratasenlasparedesNpcSheet extends ActorSheet {
     // Delete Inventory Item
     html.find('.item-delete').click(ev => {
       const li = $(ev.currentTarget).parents(".item");
-      this.actor.deleteOwnedItem(li.data("itemId"));
+      this.actor.deleteEmbeddedDocuments("Item",[li.data("itemId")]);
       li.slideUp(200, () => this.render(false));
     });
 
@@ -70,7 +70,7 @@ export class ratasenlasparedesNpcSheet extends ActorSheet {
     
     // profesion show.
     html.find('.profesion').click( ev => {
-     const profesion = this.actor.data.items.find(i => i.type == "profesion");
+     const profesion = this.actor.system.items.find(i => i.type == "profesion");
      if(profesion){
          const item = this.actor.getOwnedItem(profesion._id);
          item.sheet.render(true);
@@ -78,7 +78,7 @@ export class ratasenlasparedesNpcSheet extends ActorSheet {
     });
     // profesion show.
     html.find('.reputation').click( ev => {
-     const reputation = this.actor.data.items.find(i => i.type == "reputation");
+     const reputation = this.actor.system.items.find(i => i.type == "reputation");
      if(reputation){
          const item = this.actor.getOwnedItem(reputation._id);
          item.sheet.render(true);
@@ -113,7 +113,7 @@ export class ratasenlasparedesNpcSheet extends ActorSheet {
     delete itemData.data["type"];
 
     // Finally, create the item!
-    return this.actor.createOwnedItem(itemData);
+    return this.actor.createEmbeddedDocuments("Item",[itemData]);
   }
   
   /**
@@ -195,7 +195,7 @@ export class ratasenlasparedesNpcSheet extends ActorSheet {
     
     
     if (rollType == "weapon") {
-            let damageRoll = new Roll(dataset.damage, this.actor.data.data);
+            let damageRoll = new Roll(dataset.damage, this.actor.system.data);
             let label = dataset.label ? `Usa su ${dataset.label}.` : '';
             let damageResult = damageRoll.roll();
 

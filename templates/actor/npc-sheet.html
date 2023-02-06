@@ -7,11 +7,11 @@
             </div>
             <div class="flexrow">
                 <label class="resource-label reputation">Reputación: </label>
-                <input name="data.reputation" type="text" value="{{data.reputation}}" placeholder="Reputación"/>
+                <input name="system.reputation" type="text" value="{{system.reputation}}" placeholder="Reputación"/>
             </div>
             <div class="flexrow">
                 <label class="resource-label profesion">Profesión: </label>
-                <input name="data.profesion" type="text" value="{{data.profesion}}" placeholder="Profesión"/>
+                <input name="system.profesion" type="text" value="{{system.profesion}}" placeholder="Profesión"/>
             </div>
         </div>
         <img class="logo-img" src="/systems/ratasenlasparedes/img/logo.png" title="Ratas en lass paredes" height="120"/>
@@ -25,19 +25,19 @@
 
         <div class="derivates">
             <div class="resource flex-group-center">
-                <label for="data.pv.value" class="resource-label">PV</label>
+                <label for="system.pv.value" class="resource-label">PV</label>
                 <div class="resource-content flexrow flex-center flex-between">
-                  <input type="text" name="data.pv.value" value="{{data.pv.value}}" data-dtype="Number"/>
+                  <input type="text" name="system.pv.value" value="{{system.pv.value}}" data-dtype="Number"/>
                   <span> / </span>
-                  <input type="text" name="data.pv.max" value="{{data.pv.max}}" data-dtype="Number"/>
+                  <input type="text" name="system.pv.max" value="{{system.pv.max}}" data-dtype="Number"/>
                 </div>
             </div>
             <div class="resource flex-group-center">
-                <label for="data.power.value" class="resource-label">PC</label>
+                <label for="system.power.value" class="resource-label">PC</label>
                 <div class="resource-content flexrow flex-center flex-between">
-                  <input type="text" name="data.pc.value" value="{{data.pc.value}}" data-dtype="Number"/>
+                  <input type="text" name="system.pc.value" value="{{system.pc.value}}" data-dtype="Number"/>
                   <span> / </span>
-                  <input type="text" name="data.pc.max" value="{{data.pc.max}}" data-dtype="Number"/>
+                  <input type="text" name="system.pc.max" value="{{system.pc.max}}" data-dtype="Number"/>
                 </div>
             </div>
         </div>
@@ -62,7 +62,7 @@
 
         {{!-- Biography Tab --}}
         <div class="tab biography" data-group="primary" data-tab="description">
-            {{editor content=data.biography target="data.biography" button=true owner=owner editable=true}}
+            {{editor content=system.biography target="system.biography" button=true owner=owner editable=true}}
         </div>
 
         {{!-- Owned Items Tab --}}
@@ -71,15 +71,16 @@
                 <li class="item flexrow item-header">
                   <div class="item-image"></div>
                   <div class="item-name">Nombre</div>
+                  <div class="item-name">Daño</div>
                   <div class="item-controls">
-                    <a class="item-control item-create" title="Create item" data-type="item"><i class="fas fa-plus"></i> Añadir</a>
+                    <a class="item-control item-create create-entity" title="Create item" data-type="item"><i class="fas fa-plus"></i> Añadir</a>
                   </div>
                 </li>
-            {{#each actor.gear as |item id|}}
+            {{#each gear as |item id|}}
                 <li class="item flexrow" data-item-id="{{item._id}}">
                     <div class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="24" height="24"/></div>
-                    {{#if item.data.damage}}
-                                        <h4 class="item-name rollable" data-roll="2d6+@abilities.vio.value" data-label="{{item.name}}" data-roll-type="weapon" data-damage="{{item.data.damage}}" >{{item.name}}</h4>
+                    {{#if item.system.damage}}
+                                        <h4 class="item-name rollable" data-roll="2d6+@abilities.vio.value" data-label="{{item.name}}" data-roll-type="weapon" data-damage="{{item.system.damage}}" >{{item.name}}</h4>
                     {{else}}
                                         <h4 class="item-name">{{item.name}}</h4>
                     {{/if}}
@@ -89,11 +90,15 @@
                     </div>
                 </li>
             {{/each}}
-            {{#each actor.weapon as |item id|}}
+            {{#each weapon as |item id|}}
                 <li class="item flexrow" data-item-id="{{item._id}}">
                     <div class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="24" height="24"/></div>
-                    {{#if item.data.damage}}
-                                        <h4 class="item-name rollable" data-roll="2d6+@abilities.vio.value" data-label="{{item.name}}" data-roll-type="weapon" data-damage="{{item.data.damage}}" >{{item.name}}</h4>
+                    {{#if item.system.damage}}
+                                        <h4 class="flexrow">
+                                            <div class="item-name rollable" data-roll="2d6+@abilities.vio.value" data-label="{{item.name}}" data-roll-type="weapon" data-damage="{{item.damage}}" >{{item.name}}</div>{{log system}}
+                                            <div class="item-damage rollable" data-roll="{{item.system.damage}}" data-label="{{item.name}}" data-roll-type="damage" style="justify-self:start">({{item.system.damage}})</div>
+                                        </h4>
+                                        
                     {{else}}
                                         <h4 class="item-name">{{item.name}}</h4>
                     {{/if}}
