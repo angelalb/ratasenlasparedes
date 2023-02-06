@@ -186,28 +186,37 @@ export class ratasenlasparedesNpcSheet extends ActorSheet {
    * @param {Event} event   The originating click event
    * @private
    */
-  _onRoll(event) {
+  async _onRoll(event) {
     event.preventDefault();
     console.log(event.currentTarget);
-    const element = event.currentTarget;
-    const dataset = element.dataset;
+    const dataset = event.currentTarget.dataset;
     const rollType = dataset.rollType;
     
+    if (!dataset.roll) return;
     
-    if (rollType == "weapon") {
-            let damageRoll = new Roll(dataset.damage, this.actor.system.data);
-            let label = dataset.label ? `Usa su ${dataset.label}.` : '';
-            let damageResult = damageRoll.roll();
-
-                
-                damageResult.toMessage({
-                        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-                        flavor: 'Daño'
-                    });
-        
+    if (rollType == "damage") {
+      await this.damageRoll(dataset)
     }
-
-    
   }
 
+
+  async damageRoll(dataset) {
+      const damageMod = Array.from(this.actor.data.items).reduce(function (acu, current) {
+                          if (current.data.data.type == "Efecto" && current.data.data.value == "Daño") {
+                              acu += parseInt(current.data.data.mod);
+                          }
+                          return acu;
+                      }, 0);
+      const rollString = damageMod === 0 ? dataset.roll : `${dataset.roll} + (${damageMod})`; 
+      const roll = new Roll(rollString);
+      const label = dataset.label ? `Causa daño con su <strong>${dataset.label}</strong>.` : '';
+      const attackResult = await roll.roll();
+      const attackData = {
+          speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+          flags: {'ratasenlasparedes':{'text':label}},
+          flavor: label,
+      };
+          
+      attackResult.toMessage(attackData);
+  }
 }
