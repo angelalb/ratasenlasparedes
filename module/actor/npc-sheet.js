@@ -50,12 +50,12 @@ export class ratasenlasparedesNpcSheet extends ActorSheet {
     if (!this.options.editable) return;
 
     // Add Inventory Item
-    html.find('.item-create').click(this._onItemCreate.bind(this));
+    html.find('.item-create').click(ev => this._onItemCreate(ev));
 
     // Update Inventory Item
     html.find('.item-edit').click(ev => {
       const li = $(ev.currentTarget).parents(".item");
-      const item = this.actor.getOwnedItem(li.data("itemId"));
+      const item = this.actor.getEmbeddedDocument("Item",li.data("itemId"));
       item.sheet.render(true);
     });
 
