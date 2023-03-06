@@ -32,7 +32,7 @@ export class ratasenlasparedesNpcSheet extends ActorSheet {
     data.dtypes = ["String", "Number", "Boolean"];
 
     // Prepare items.
-    if (this.actor.data.type == 'npc') {
+    if (this.actor.type == 'npc') {
       this._prepareCharacterItems(data);
     }
 
@@ -50,19 +50,19 @@ export class ratasenlasparedesNpcSheet extends ActorSheet {
     if (!this.options.editable) return;
 
     // Add Inventory Item
-    html.find('.item-create').click(this._onItemCreate.bind(this));
+    html.find('.item-create').click(ev => this._onItemCreate(ev));
 
     // Update Inventory Item
     html.find('.item-edit').click(ev => {
       const li = $(ev.currentTarget).parents(".item");
-      const item = this.actor.getOwnedItem(li.data("itemId"));
+      const item = this.actor.getEmbeddedDocument("Item",li.data("itemId"));
       item.sheet.render(true);
     });
 
     // Delete Inventory Item
     html.find('.item-delete').click(ev => {
       const li = $(ev.currentTarget).parents(".item");
-      this.actor.deleteOwnedItem(li.data("itemId"));
+      this.actor.deleteEmbeddedDocuments("Item",[li.data("itemId")]);
       li.slideUp(200, () => this.render(false));
     });
 
@@ -70,7 +70,7 @@ export class ratasenlasparedesNpcSheet extends ActorSheet {
     
     // profesion show.
     html.find('.profesion').click( ev => {
-     const profesion = this.actor.data.items.find(i => i.type == "profesion");
+     const profesion = this.actor.system.items.find(i => i.type == "profesion");
      if(profesion){
          const item = this.actor.getOwnedItem(profesion._id);
          item.sheet.render(true);
@@ -78,7 +78,7 @@ export class ratasenlasparedesNpcSheet extends ActorSheet {
     });
     // profesion show.
     html.find('.reputation').click( ev => {
-     const reputation = this.actor.data.items.find(i => i.type == "reputation");
+     const reputation = this.actor.system.items.find(i => i.type == "reputation");
      if(reputation){
          const item = this.actor.getOwnedItem(reputation._id);
          item.sheet.render(true);
@@ -113,7 +113,7 @@ export class ratasenlasparedesNpcSheet extends ActorSheet {
     delete itemData.data["type"];
 
     // Finally, create the item!
-    return this.actor.createOwnedItem(itemData);
+    return this.actor.createEmbeddedDocuments("Item",[itemData]);
   }
   
   /**
@@ -186,28 +186,37 @@ export class ratasenlasparedesNpcSheet extends ActorSheet {
    * @param {Event} event   The originating click event
    * @private
    */
-  _onRoll(event) {
+  async _onRoll(event) {
     event.preventDefault();
     console.log(event.currentTarget);
-    const element = event.currentTarget;
-    const dataset = element.dataset;
+    const dataset = event.currentTarget.dataset;
     const rollType = dataset.rollType;
     
+    if (!dataset.roll) return;
     
-    if (rollType == "weapon") {
-            let damageRoll = new Roll(dataset.damage, this.actor.data.data);
-            let label = dataset.label ? `Usa su ${dataset.label}.` : '';
-            let damageResult = damageRoll.roll();
-
-                
-                damageResult.toMessage({
-                        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-                        flavor: 'Daño'
-                    });
-        
+    if (rollType == "damage") {
+      await this.damageRoll(dataset)
     }
-
-    
   }
 
+
+  async damageRoll(dataset) {
+      const damageMod = Array.from(this.actor.data.items).reduce(function (acu, current) {
+                          if (current.data.data.type == "Efecto" && current.data.data.value == "Daño") {
+                              acu += parseInt(current.data.data.mod);
+                          }
+                          return acu;
+                      }, 0);
+      const rollString = damageMod === 0 ? dataset.roll : `${dataset.roll} + (${damageMod})`; 
+      const roll = new Roll(rollString);
+      const label = dataset.label ? `Causa daño con su <strong>${dataset.label}</strong>.` : '';
+      const attackResult = await roll.roll();
+      const attackData = {
+          speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+          flags: {'ratasenlasparedes':{'text':label}},
+          flavor: label,
+      };
+          
+      attackResult.toMessage(attackData);
+  }
 }
