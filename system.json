@@ -2,9 +2,11 @@
   "name": "ratasenlasparedes",
   "title": "Ratas en las paredes",
   "description": "Ratas en las paredes para FoundryVTT!",
-  "version": "1.2.0",
-  "minimumCoreVersion": "10",
-  "compatibleCoreVersion": "10",
+  "version": "1.2.1",
+  "compatibility": {
+	"minimum": "10",
+	"verified": "11"
+  },
   "templateVersion": 2,
   "author": "jvir",
     "authors": [
@@ -27,70 +29,70 @@
 			"label": "Armas",
 			"system": "ratasenlasparedes",
 			"path": "./packs/armas.db",
-			"entity": "Item"
+			"type": "Item"
 		},
 		{
 			"name": "ayudas",
 			"label": "Ayudas",
 			"system": "ratasenlasparedes",
 			"path": "./packs/ayudas.db",
-			"entity": "JournalEntry"
+			"type": "JournalEntry"
 		},
 		{
 			"name": "equipo",
 			"label": "Equipo",
 			"system": "ratasenlasparedes",
 			"path": "./packs/equipo.db",
-			"entity": "Item"
+			"type": "Item"
 		},
 		{
 			"name": "profesiones",
 			"label": "Profesiones",
 			"system": "ratasenlasparedes",
 			"path": "./packs/profesiones.db",
-			"entity": "Item"
+			"type": "Item"
 		},
 		{
 			"name": "reputaciones",
 			"label": "Reputaciones",
 			"system": "ratasenlasparedes",
 			"path": "./packs/reputaciones.db",
-			"entity": "Item"
+			"type": "Item"
 		},
 		{
 			"name": "hechizos",
 			"label": "Hechizos",
 			"system": "ratasenlasparedes",
 			"path": "./packs/hechizos.db",
-			"entity": "Item"
+			"type": "Item"
 		},
 		{
 			"name": "experiencia",
 			"label": "Experiencia",
 			"system": "ratasenlasparedes",
 			"path": "./packs/experiencia.db",
-			"entity": "Item"
+			"type": "Item"
 		},
 		{
 			"name": "tablas",
 			"label": "Tablas",
 			"system": "ratasenlasparedes",
 			"path": "./packs/tablas.db",
-			"entity": "RollTable"
+			"type": "RollTable"
 		},
 		{
 			"name": "antagonistas",
 			"label": "Antagonistas",
 			"system": "ratasenlasparedes",
 			"path": "./packs/antagonistas.db",
-			"entity": "Actor"
+			"type": "Actor"
 		},
         {
 			"name": "horrores-tras-los-muros-de-la-cordura",
 			"label": "Horrores tras los muros de la cordura",
 			"system": "ratasenlasparedes",
 			"path": "./packs/horrores-tras-los-muros-de-la-cordura.db",
-			"entity": "Actor"
+			"type": "Actor"
 		}
   ],
   "languages": [
