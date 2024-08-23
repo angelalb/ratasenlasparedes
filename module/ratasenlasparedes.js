@@ -75,6 +75,10 @@ Handlebars.registerHelper('json', function (context) {
 });
 
 Hooks.on('createItem', (sheet, aux, itemId) => {
+    if (sheet.actor == null){
+        return
+    }
+    
     let profesions = sheet.actor.items.filter(i => i.type == "profesion");
     let reputations = sheet.actor.items.filter(i => i.type == "reputation");
     if (sheet.type == "profesion" && profesions.length > 1) {
@@ -143,10 +147,10 @@ Hooks.on('ready', () => {
         roll.toMessage();
     });
 
-    $(document).on('click', '.ratas-sanity-check', ev => {
+    $(document).on('click', '.ratas-sanity-check', async ev => {
         let roll = new Roll(String($(ev.currentTarget).data('formula')));
         let actorId = String($(ev.currentTarget).data('actor-id'));
-        roll.roll({async: false});
+        await roll.roll();
         let label = "Perdida de cordura.";
         let sanityData = {
             speaker: ChatMessage.getSpeaker({ actor: actorId }),

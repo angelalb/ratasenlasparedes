@@ -28,7 +28,7 @@ export class ratasenlasparedesActor extends Actor {
             link = false;
         }
         data.token = data.token || {};
-        mergeObject(data.token, {
+        foundry.utils.mergeObject(data.token, {
             vision: true,
             dimSight: 30,
             brightSight: 0,

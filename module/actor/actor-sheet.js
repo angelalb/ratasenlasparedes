@@ -6,7 +6,7 @@ export class ratasenlasparedesActorSheet extends ActorSheet {
 
   /** @override */
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["ratasenlasparedes", "sheet", "actor"],
       template: "systems/ratasenlasparedes/templates/actor/actor-sheet.html",
       width: 600,
@@ -79,19 +79,18 @@ export class ratasenlasparedesActorSheet extends ActorSheet {
     
     // profesion show.
     html.find('.profesion').click( ev => {
-     const profesion = this.actor.items.find(i => i.type == "profesion");
-     if(profesion){
-         const item = this.actor.getEmbeddedDocument("Item",[profesion._id]);
+      const profesion = this.actor.items.find(i => i.type == "profesion");
+      if(profesion){
+         const item = this.actor.getEmbeddedDocument("Item",profesion._id);
          item.sheet.render(true);
-     }
+      }
     });
-    // profesion show.
+    // reputation show.
     html.find('.reputation').click( ev => {
-     const reputation = this.actor.items.find(i => i.type == "reputation");
-     if(reputation){
-         const item = this.actor.getEmbeddedDocument("Item",[reputation._id]);
+      if(reputation){
+         const item = this.actor.getEmbeddedDocument("Item",reputation._id);
          item.sheet.render(true);
-     }
+      }
     });
     
   }
@@ -179,7 +178,7 @@ export class ratasenlasparedesActorSheet extends ActorSheet {
             } else {
                 rollString = dataset.roll;
             }
-            let roll = new Roll(rollString, this.actor.data.data);
+            let roll = new Roll(rollString, this.actor.system);
             let damageRoll = new Roll(dataset.damage, this.actor.system);
             let label = dataset.label ? `Usa su <strong>${dataset.label}</strong> ${difficultyString}.` : '';
             let attackResult = await roll.roll();
@@ -212,9 +211,9 @@ export class ratasenlasparedesActorSheet extends ActorSheet {
     
     if (rollType == "damage") {
         if (dataset.roll) {
-            let damageMod = Array.from(this.actor.data.items).reduce(function (acu, current) {
-                                if (current.data.data.type == "Efecto" && current.data.data.value == "Daño") {
-                                    acu += parseInt(current.data.data.mod);
+            let damageMod = Array.from(this.actor.items).reduce(function (acu, current) {
+                                if (current.system.type == "Efecto" && current.system.value == "Daño") {
+                                    acu += parseInt(current.system.mod);
                                 }
                                 return acu;
                             }, 0);
@@ -279,7 +278,7 @@ export class ratasenlasparedesActorSheet extends ActorSheet {
    */
   _prepareCharacterItems(sheetData) {
     const actorData = sheetData;
-console.log(sheetData);
+    console.log(sheetData);
     // Initialize containers.
     const gear = [];
     const profesion = [];
@@ -292,7 +291,6 @@ console.log(sheetData);
     // Iterate through items, allocating to containers
     // let totalWeight = 0;
     for (let i of sheetData.items) {
-      let item = i.data;
       i.img = i.img || DEFAULT_TOKEN;
       // Append to gear.
       if (i.type === 'item') {
@@ -300,11 +298,11 @@ console.log(sheetData);
       }
       // Append to profesion.
       else if (i.type === 'profesion') {
-        profesion.push(i);
+        profesion.push(i.name);
       }
       // Append to reputation.
       else if (i.type === 'reputation') {
-        reputation.push(i);
+        reputation.push(i.name);
       }
       // Append to weapons.
       else if (i.type === 'weapon') {
@@ -326,8 +324,8 @@ console.log(sheetData);
 
     // Assign and return
     actorData.gear = gear;
-    actorData.profesion = profesion;
-    actorData.reputation = reputation;
+    actorData.system.profesion = profesion.join(",");
+    actorData.system.reputation = reputation.join(",");
     actorData.weapon = weapon;
     actorData.scar = scar;
     actorData.mean = mean;

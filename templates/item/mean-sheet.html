@@ -6,15 +6,15 @@
             <div class="grid grid-2col">
               <div class="resource">
                 <label class="resource-label">Tipo</label>
-                  <input type="text" name="data.type" value="{{data.type}}" data-dtype="string"/>
+                  <input type="text" name="system.type" value="{{system.type}}" data-dtype="string"/>
               </div>
               <div class="resource">
                 <label class="resource-label">Valor</label>
-                  <input type="text" name="data.value" value="{{data.value}}" data-dtype="string"/>
+                  <input type="text" name="system.value" value="{{system.value}}" data-dtype="string"/>
               </div>
               <div class="resource">
                 <label class="resource-label">Modificador</label>
-                  <input type="text" name="data.mod" value="{{data.mod}}" data-dtype="string"/>
+                  <input type="text" name="system.mod" value="{{system.mod}}" data-dtype="string"/>
               </div>
             </div>
         </div>
@@ -30,7 +30,7 @@
 
         {{!-- Description Tab --}}
         <div class="tab" data-group="primary" data-tab="description">
-            {{editor content=data.description target="data.description" button=true owner=owner editable=true}}
+            {{editor system.description target="system.description" button=true editable=true}}
         </div>
     </section>
 </form>

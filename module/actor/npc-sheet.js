@@ -7,7 +7,7 @@ export class ratasenlasparedesNpcSheet extends ActorSheet {
   /** @override */
   static get defaultOptions() {
       console.log('error1');
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["ratasenlasparedes", "sheet", "actor", "npc"],
       //template: "systems/ratasenlasparedes/templates/actor/npc-sheet.html",
       width: 600,
@@ -138,7 +138,6 @@ export class ratasenlasparedesNpcSheet extends ActorSheet {
     // Iterate through items, allocating to containers
     // let totalWeight = 0;
     for (let i of sheetData.items) {
-      let item = i.data;
       i.img = i.img || DEFAULT_TOKEN;
       // Append to gear.
       if (i.type === 'item') {
@@ -146,11 +145,11 @@ export class ratasenlasparedesNpcSheet extends ActorSheet {
       }
       // Append to profesion.
       else if (i.type === 'profesion') {
-        profesion.push(i);
+        profesion.push(i.name);
       }
       // Append to reputation.
       else if (i.type === 'reputation') {
-        reputation.push(i);
+        reputation.push(i.name);
       }
       // Append to weapons.
       else if (i.type === 'weapon') {
@@ -172,8 +171,8 @@ export class ratasenlasparedesNpcSheet extends ActorSheet {
 
     // Assign and return
     actorData.gear = gear;
-    actorData.profesion = profesion;
-    actorData.reputation = reputation;
+    actorData.system.profesion = profesion.join(",");
+    actorData.system.reputation = reputation.join(",");
     actorData.weapon = weapon;
     actorData.scar = scar;
     actorData.mean = mean;
@@ -188,22 +187,33 @@ export class ratasenlasparedesNpcSheet extends ActorSheet {
    */
   async _onRoll(event) {
     event.preventDefault();
-    console.log(event.currentTarget);
     const dataset = event.currentTarget.dataset;
+    console.log(dataset)
     const rollType = dataset.rollType;
     
     if (!dataset.roll) return;
-    
+
     if (rollType == "damage") {
       await this.damageRoll(dataset)
+    } else {
+      let roll = new Roll(dataset.roll, this.actor.system);
+      let rollResult = await roll.roll();
+              
+      let messageData = {
+              speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+              flags: {'ratasenlasparedes':{'text':dataset.label, 'detail': rollResult.result}},
+              flavor: dataset.label,
+          };
+      
+      rollResult.toMessage(messageData); 
     }
   }
 
 
   async damageRoll(dataset) {
-      const damageMod = Array.from(this.actor.data.items).reduce(function (acu, current) {
-                          if (current.data.data.type == "Efecto" && current.data.data.value == "Daño") {
-                              acu += parseInt(current.data.data.mod);
+      const damageMod = Array.from(this.actor.items).reduce(function (acu, current) {
+                          if (current.system.type == "Efecto" && current.system.value == "Daño") {
+                              acu += parseInt(current.system.mod);
                           }
                           return acu;
                       }, 0);
