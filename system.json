@@ -107,7 +107,7 @@
   "primaryTokenAttribute": "pv",
   "secondaryTokenAttribute": "pc",
   "url": "https://gitlab.com/jvir/foundry-ratasenlasparedes/",
-  "manifest": "https://gitlab.com/jvir/foundry-ratasenlasparedes/-/raw/master/system.json",
-  "download": "https://gitlab.com/jvir/foundry-ratasenlasparedes/-/archive/master/foundry-ratasenlasparedes-master.zip",
+  "manifest": "https://raw.githubusercontent.com/angelalb/ratasenlasparedes/master/system.json",
+  "download": "https://github.com/angelalb/ratasenlasparedes/archive/refs/heads/master.zip",
   "license": "LICENSE.txt"
 }
