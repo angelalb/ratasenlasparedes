@@ -106,7 +106,7 @@
   "gridUnits": "m",
   "primaryTokenAttribute": "pv",
   "secondaryTokenAttribute": "pc",
-  "url": "https://gitlab.com/jvir/foundry-ratasenlasparedes/",
+  "url": "https://github.com/angelalb/ratasenlasparedes/",
   "manifest": "https://raw.githubusercontent.com/angelalb/ratasenlasparedes/master/system.json",
   "download": "https://github.com/angelalb/ratasenlasparedes/archive/refs/heads/master.zip",
   "license": "LICENSE.txt"
